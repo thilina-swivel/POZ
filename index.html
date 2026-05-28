@@ -38,6 +38,14 @@
   --brand-primary-fg:   #ffffff;
   --brand-secondary:    #f59e0b;
   --brand-secondary-fg: #0f0f14;
+  --status-success:     #166534;
+  --status-success-bg:  rgba(220,252,231,0.80);
+  --status-warning:     #92400e;
+  --status-warning-bg:  rgba(254,243,199,0.80);
+  --status-error:       #b91c1c;
+  --status-error-bg:    rgba(254,226,226,0.80);
+  --status-info:        #1e40af;
+  --status-info-bg:     rgba(219,234,254,0.80);
 }
 
 html.dark {
@@ -61,6 +69,14 @@ html.dark {
   --red-bg:    rgba(248,113,113,0.10);
   --shadow:    0 4px 24px rgba(0,0,0,0.30), 0 1px 4px rgba(0,0,0,0.20);
   --shadow-l:  0 8px 40px rgba(0,0,0,0.40), 0 2px 8px rgba(0,0,0,0.30);
+  --status-success:     #4ade80;
+  --status-success-bg:  rgba(74,222,128,0.10);
+  --status-warning:     #fbbf24;
+  --status-warning-bg:  rgba(251,191,36,0.10);
+  --status-error:       #f87171;
+  --status-error-bg:    rgba(248,113,113,0.10);
+  --status-info:        #60a5fa;
+  --status-info-bg:     rgba(96,165,250,0.10);
 }
 
 html { scroll-behavior: smooth; }
@@ -258,28 +274,43 @@ h3 {
 }
 
 /* ─── COLOR ROLES ─── */
-.roles-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-top: 48px; }
-.role-card {
-  background: var(--glass); border: 1px solid var(--border);
-  backdrop-filter: blur(16px) saturate(160%);
-  -webkit-backdrop-filter: blur(16px) saturate(160%);
-  border-radius: var(--radius); padding: 24px;
-  box-shadow: var(--shadow); transition: box-shadow 0.2s, transform 0.2s;
+.roles-list { display: flex; flex-direction: column; margin-top: 40px; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.role-row {
+  display: grid; grid-template-columns: 40px 200px 1fr auto;
+  align-items: center; gap: 20px; padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
 }
-.role-card:hover { box-shadow: var(--shadow-l); transform: translateY(-2px); }
-.role-swatch {
-  width: 100%; height: 56px; border-radius: var(--radius-s);
-  margin-bottom: 18px; display: flex; align-items: center; justify-content: center;
-  font-size: 15px; font-family: 'Geist',sans-serif; font-weight: 600;
+.role-row:last-child { border-bottom: none; }
+.role-dot { width: 28px; height: 28px; border-radius: 6px; flex-shrink: 0; }
+.role-name { font-size: 14px; font-weight: 600; color: var(--text); }
+.role-desc { font-size: 13px; color: var(--text-3); line-height: 1.5; }
+.role-badge {
+  display: inline-block; font-size: 11px; font-weight: 700;
+  font-family: 'Geist',sans-serif; padding: 3px 9px; border-radius: 4px; white-space: nowrap;
 }
-.role-name { font-family: 'Geist',sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 6px; }
-.role-desc { font-size: 13.5px; color: var(--text-2); line-height: 1.6; }
-.role-desc strong { color: var(--text); font-weight: 600; }
-.role-set-by {
-  display: inline-block; margin-top: 12px; font-size: 11.5px; font-weight: 600;
-  font-family: 'Geist',sans-serif; padding: 3px 10px; border-radius: 4px;
-  background: var(--bg-3); color: var(--text-3);
+.role-badge.client {
+  background: color-mix(in srgb, var(--brand-primary) 12%, transparent);
+  color: var(--brand-primary);
+  border: 1px solid color-mix(in srgb, var(--brand-primary) 25%, transparent);
 }
+.role-badge.computed {
+  background: var(--green-bg); color: var(--green);
+  border: 1px solid color-mix(in srgb, var(--green) 20%, transparent);
+}
+.role-badge.derived {
+  background: var(--amber-bg); color: var(--amber);
+  border: 1px solid color-mix(in srgb, var(--amber) 20%, transparent);
+}
+.role-badge.none { background: var(--bg-3); color: var(--text-3); border: 1px solid var(--border); }
+.role-locked {
+  display: inline-flex; align-items: center; gap: 5px; margin-top: 12px;
+  font-size: 11.5px; font-weight: 600; font-family: 'Geist',sans-serif;
+  padding: 3px 10px; border-radius: 4px;
+  background: rgba(248,113,113,0.12); color: #b91c1c;
+  border: 1px solid rgba(185,28,28,0.20);
+}
+html.dark .role-locked { background: rgba(248,113,113,0.10); color: #f87171; border-color: rgba(248,113,113,0.20); }
+.role-locked::before { content: "🔒"; font-size: 10px; }
 
 /* ─── TESTER ─── */
 .tester-wrap {
@@ -447,8 +478,9 @@ footer {
 }
 
 @media (max-width: 900px) {
-  .problem-grid, .roles-grid, .rules-grid { grid-template-columns: 1fr; }
-  .roles-grid { grid-template-columns: 1fr 1fr; }
+  .problem-grid, .rules-grid { grid-template-columns: 1fr; }
+  .role-row { grid-template-columns: 40px 1fr auto; }
+  .role-desc { display: none; }
   .tester-body { grid-template-columns: 1fr; }
   .tester-controls { border-right: none; border-bottom: 1px solid var(--border); }
   nav { padding: 0 20px; }
@@ -462,7 +494,7 @@ footer {
 }
 
 @media (max-width: 560px) {
-  .roles-grid, .rules-grid { grid-template-columns: 1fr; }
+  .rules-grid { grid-template-columns: 1fr; }
   .hero-pills { flex-direction: column; align-items: flex-start; }
   .tester-bar { flex-direction: column; align-items: flex-start; gap: 4px; padding: 14px 18px; }
   .wrap { padding: 56px 16px; }
@@ -474,7 +506,7 @@ footer {
 <body>
 
 <nav>
-  <span class="nav-logo">POZ<em>.</em>DS</span>
+  <span class="nav-logo">POZ</span>
   <ul class="nav-links">
     <li><a href="#problem">The Problem</a></li>
     <li><a href="#howitworks">How It Works</a></li>
@@ -594,45 +626,70 @@ footer {
   <h2>Every color has<br>a defined purpose</h2>
   <p class="lead">Instead of one color doing everything, the system splits each brand color into two: the color itself, and a matching text color computed on top of it.</p>
 
-  <div class="roles-grid">
-    <div class="role-card">
-      <div class="role-swatch" style="background:var(--brand-primary);color:var(--brand-primary-fg)">Brand Color</div>
+  <div class="roles-list">
+    <div class="role-row">
+      <div class="role-dot" style="background:var(--brand-primary)"></div>
       <div class="role-name">Primary Brand Color</div>
-      <div class="role-desc">Set by the client. Used as the background for <strong>buttons</strong>, <strong>active navigation tabs</strong>, and key UI elements.</div>
-      <span class="role-set-by">Set by client</span>
+      <div class="role-desc">Background for buttons, active nav tabs, and key UI elements.</div>
+      <span class="role-badge client">Set by client</span>
     </div>
-    <div class="role-card">
-      <div class="role-swatch" style="background:var(--brand-primary);color:var(--brand-primary-fg)">
-        <span style="font-weight:700;font-size:14px">Aa</span>
-        <span style="font-size:11px;opacity:0.8;margin-left:8px">auto text</span>
-      </div>
-      <div class="role-name">Text on Primary</div>
-      <div class="role-desc">Auto-computed as black or white based on brand brightness. This is what sits on top of <strong>buttons</strong>, <strong>active nav</strong>, and <strong>badges</strong>.</div>
-      <span class="role-set-by">Auto-computed</span>
-    </div>
-    <div class="role-card">
-      <div class="role-swatch" style="background:var(--brand-secondary);color:var(--brand-secondary-fg)">Accent Color</div>
+    <div class="role-row">
+      <div class="role-dot" style="background:var(--brand-secondary)"></div>
       <div class="role-name">Secondary Brand Color</div>
-      <div class="role-desc">Set by the client. Used for <strong>badges</strong>, <strong>status labels</strong>, and secondary actions. Gets its own auto-computed text color too.</div>
-      <span class="role-set-by">Set by client</span>
+      <div class="role-desc">Used for badges, secondary actions, and supporting UI elements.</div>
+      <span class="role-badge client">Set by client</span>
     </div>
-    <div class="role-card">
-      <div class="role-swatch" style="background:color-mix(in srgb,var(--brand-primary) 14%,var(--bg-2));color:var(--brand-primary);border:1px solid color-mix(in srgb,var(--brand-primary) 25%,transparent)">Subtle Tint</div>
-      <div class="role-name">Ghost / Tint Variant</div>
-      <div class="role-desc">A very light version of the brand color — used for <strong>hover states</strong> and subtle backgrounds. No contrast issue since text uses the full brand color.</div>
-      <span class="role-set-by">Auto-derived</span>
+    <div class="role-row">
+      <div class="role-dot" style="background:var(--brand-primary);display:flex;align-items:center;justify-content:center;color:var(--brand-primary-fg);font-size:11px;font-weight:700">Aa</div>
+      <div class="role-name">Text on Brand</div>
+      <div class="role-desc">Black or white — computed from brand brightness to guarantee 4.5:1 contrast.</div>
+      <span class="role-badge computed">Auto</span>
     </div>
-    <div class="role-card">
-      <div class="role-swatch" style="background:var(--bg-2);color:var(--brand-primary);border:1.5px solid var(--brand-primary)">Outline</div>
-      <div class="role-name">Outline Variant</div>
-      <div class="role-desc">Brand color used as a <strong>border</strong> or <strong>icon color</strong> on a neutral background. Always safe — no legibility risk since there's no text sitting on the brand color.</div>
-      <span class="role-set-by">Auto-derived</span>
+    <div class="role-row">
+      <div class="role-dot" style="background:color-mix(in srgb,var(--brand-primary) 14%,var(--bg-2));border:1px solid color-mix(in srgb,var(--brand-primary) 25%,transparent)"></div>
+      <div class="role-name">Ghost / Tint</div>
+      <div class="role-desc">Light brand tint for hover states and subtle backgrounds.</div>
+      <span class="role-badge derived">Auto</span>
     </div>
-    <div class="role-card" style="background:var(--bg-2)">
-      <div class="role-swatch" style="background:var(--bg-3);border:1px solid var(--border);color:var(--text-2);font-size:13px">No change</div>
+    <div class="role-row">
+      <div class="role-dot" style="background:var(--bg-3);border:1.5px solid var(--brand-primary)"></div>
+      <div class="role-name">Outline</div>
+      <div class="role-desc">Brand color as a border or icon on a neutral surface — no contrast risk.</div>
+      <span class="role-badge derived">Auto</span>
+    </div>
+    <div class="role-row">
+      <div class="role-dot" style="background:var(--bg-3);border:1px solid var(--border)"></div>
       <div class="role-name">Everything else</div>
-      <div class="role-desc">Charts, progress bars, decorative fills, and borders already work fine. They use the brand color without putting text on top — no adjustment needed.</div>
-      <span class="role-set-by">No change needed</span>
+      <div class="role-desc">Charts, fills, decorative borders — brand color without text on top.</div>
+      <span class="role-badge none">No change</span>
+    </div>
+  </div>
+
+  <!-- Status Colors -->
+  <div class="roles-list" style="margin-top:24px;">
+    <div class="role-row">
+      <div class="role-dot" style="background:var(--status-success-bg);border:1px solid color-mix(in srgb,var(--status-success) 20%,transparent)"></div>
+      <div class="role-name">Success</div>
+      <div class="role-desc">Confirmations, completed states, and positive feedback.</div>
+      <span class="role-locked">System-defined</span>
+    </div>
+    <div class="role-row">
+      <div class="role-dot" style="background:var(--status-warning-bg);border:1px solid color-mix(in srgb,var(--status-warning) 20%,transparent)"></div>
+      <div class="role-name">Warning</div>
+      <div class="role-desc">Cautionary states and non-critical alerts requiring attention.</div>
+      <span class="role-locked">System-defined</span>
+    </div>
+    <div class="role-row">
+      <div class="role-dot" style="background:var(--status-error-bg);border:1px solid color-mix(in srgb,var(--status-error) 20%,transparent)"></div>
+      <div class="role-name">Error</div>
+      <div class="role-desc">Failure states, destructive actions, and form validation errors.</div>
+      <span class="role-locked">System-defined</span>
+    </div>
+    <div class="role-row">
+      <div class="role-dot" style="background:var(--status-info-bg);border:1px solid color-mix(in srgb,var(--status-info) 20%,transparent)"></div>
+      <div class="role-name">Info</div>
+      <div class="role-desc">Neutral notifications and contextual tips with no required action.</div>
+      <span class="role-locked">System-defined</span>
     </div>
   </div>
 </div>
