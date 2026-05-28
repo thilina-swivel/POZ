@@ -980,7 +980,7 @@ function isHex(h) { return /^#([A-Fa-f0-9]{3}){1,2}$/.test(h) }
 function apply(type, hex) {
   if (!isHex(hex)) return
   const fg = getFg(hex), r = ratio(hex), w = wcag(r)
-  const root = document.documentElement
+  const root = document.getElementById('tester')
   root.style.setProperty(`--brand-${type}`, hex)
   root.style.setProperty(`--brand-${type}-fg`, fg)
   document.getElementById(type[0]+'fg').textContent = fg
